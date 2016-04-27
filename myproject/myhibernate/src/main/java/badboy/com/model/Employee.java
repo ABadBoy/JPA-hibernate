@@ -1,18 +1,25 @@
 package badboy.com.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.sql.Date;
+import java.util.Date;
 
-/**
- * Created by peter zhao on 4/27/2016.
- */
+
 @Entity
 @Table(name = "EMPLOYEE")
+@NamedQueries({@NamedQuery(name = "deleteAllEmployee", query = "delete from Employee "),
+		      @NamedQuery(name = "findEmployeeByName", query ="select  e from Employee e where e.firstName=:firstName")
+})
 public class Employee {
 
 	@Id
@@ -30,6 +37,14 @@ public class Employee {
 
 	@Column(name = "phone")
 	private String phone;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "addressid")
+	private Address address;
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "departmentid")
+	private Department department;
 
 	public Long getId() {
 		return id;
@@ -69,5 +84,21 @@ public class Employee {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
 	}
 }
