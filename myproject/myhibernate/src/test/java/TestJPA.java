@@ -115,12 +115,14 @@ public class TestJPA {
 		employee1.setLastName("www");
 		employee1.setBirthDate(new Date());
 		employee1.setPhone("123456789");
+		employee1.setDepartment(department);
 
 		Employee employee2 = new Employee();
 		employee2.setFirstName("www");
 		employee2.setLastName("qqq");
 		employee2.setBirthDate(new Date());
 		employee2.setPhone("987654321");
+		employee2.setDepartment(department);
 
 		Set<Employee> employeeSet = new HashSet<Employee>();
 		employeeSet.add(employee1);
@@ -133,6 +135,19 @@ public class TestJPA {
 		entityManager.persist(department);
 		entityManager.getTransaction().commit();
 		entityManager.close();
+
+	}
+
+	@Test
+	public void deleteDepartmentWithEmployee() {
+
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+		Department  department = (Department) entityManager.createNamedQuery("findDepartmentByName").setParameter("departmentName","GOOGLE").getSingleResult();
+		entityManager.remove(department);
+		entityManager.getTransaction().commit();
+		entityManager.close();
+
 
 	}
 
